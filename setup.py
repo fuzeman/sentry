@@ -49,7 +49,7 @@ from sentry.utils.distutils import (
 )
 
 # The version of sentry
-VERSION = '8.10.0'
+VERSION = '8.10.1'
 
 # Hack to prevent stupid "TypeError: 'NoneType' object is not callable" error
 # in multiprocessing/util.py _exit_function when running `python
