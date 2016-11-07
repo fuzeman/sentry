@@ -113,7 +113,10 @@ class Event(Model):
 
     @property
     def title(self):
-        et = eventtypes.get(self.get_event_type())(self.data)
+        data = self.data.copy() if self.data else {}
+        data['message'] = self.message
+
+        et = eventtypes.get(self.get_event_type())(data)
         return et.to_string(self.get_event_metadata())
 
     def error(self):
