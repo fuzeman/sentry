@@ -123,14 +123,23 @@ class BaseBuildCommand(Command):
 
     def _setup_npm(self):
         node_version = []
-        for app in 'node', 'npm':
-            try:
-                node_version.append(
-                    self._run_command([app, '--version']).rstrip()
-                )
-            except OSError:
+        for candidates in ['node', 'nodejs'], ['npm']:
+            found = False
+
+            for name in candidates:
+                try:
+                    node_version.append(
+                        self._run_command([name, '--version']).rstrip()
+                    )
+
+                    found = True
+                    break
+                except OSError:
+                    pass
+
+            if not found:
                 log.fatal('Cannot find `{0}` executable. Please install {0}`'
-                          ' and try again.'.format(app))
+                          ' and try again.'.format(candidates[0]))
                 sys.exit(1)
 
         log.info('using node ({}) and npm ({})'.format(*node_version))
